@@ -32,9 +32,9 @@ pipeline{
               }
             }
         }
-        stage("Archive Build"){
+        stage("Store Artifacts"){
             steps{
-               archiveArtifacts artifacts: "${appName}-archive.tar.gz*", followSymlinks: false
+               archiveArtifacts artifacts: 'target/*.jar', followSymlinks: false
             }
         }
     //    stage("Build Container Images"){
