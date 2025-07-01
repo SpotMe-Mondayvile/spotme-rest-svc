@@ -53,7 +53,7 @@ pipeline{
                     dir("./"){
                         try{
                             docker.withRegistry(registryUrl,'spotme-containerregistry') {
-                                sh "docker system prune -a -f"
+                                // sh "docker system prune -a -f"
 
                                 def smweb = docker.build("spotme/${appName}:${s_branch}","./")
                                 //"docker push ${registry}${appName}:${s_branch}"
@@ -99,7 +99,6 @@ pipeline{
         }
         stage("Store Pipeline Artifacts"){
             steps{
-               archiveArtifacts artifacts: "${appName}-archive.tar.gz*", followSymlinks: false
                archiveArtifacts artifacts: 'imageRef.properties', followSymlinks: false
                archiveArtifacts artifacts: 'pipeline.properties', followSymlinks: false
             }
