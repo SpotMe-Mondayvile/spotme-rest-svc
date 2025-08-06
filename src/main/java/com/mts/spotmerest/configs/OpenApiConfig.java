@@ -55,7 +55,7 @@ public class OpenApiConfig {
 
 
         Info info = new Info()
-                .title("SpotMe Dev API")
+                .title("SpotMe Authentication Service API")
                 .version("1.0")
                 .contact(contact)
                 .description("This API exposes endpoints to manage tutorials.").termsOfService("https://www.bezkoder.com/terms");
