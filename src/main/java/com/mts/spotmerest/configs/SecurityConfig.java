@@ -36,8 +36,6 @@ public class SecurityConfig {
 
     private String gateWayURL= System.getenv("GATE_WAY_URL");
 
-
-
     private static final String[] AUTH_WHITE_LIST = {
             "/swagger-ui/index.html",
             "/api/v1/auth/**",
@@ -49,7 +47,8 @@ public class SecurityConfig {
             "/swagger-resources/**",
             "/webjars/**",
             "/bus/v3/api-docs/**",
-            "/api/v1/info"
+            "/api/v1/info",
+            "/h2-console/**"
     };
 
 //    @Bean
@@ -78,7 +77,7 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:8100","http://localhost:8083",gateWayURL,"http://localhost:5173","http://localhost:3000",originUrl,"https://rest.spot-me-app.com/",uiURL,"https://ui.spot-me-app.com/"));
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:8100","http://localhost:8083",gateWayURL,"http://localhost:8081","http://localhost:5173","http://localhost:3000",originUrl,"https://rest.spot-me-app.com/",uiURL,"https://ui.spot-me-app.com/"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
         corsConfiguration.setAllowedMethods(Arrays.asList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -102,6 +101,7 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         http.cors((cors)->cors.configurationSource(corsConfigurationSource()));
+        http.headers(headers -> headers.frameOptions().disable());
         return http.build();
     }
 //    @Bean
