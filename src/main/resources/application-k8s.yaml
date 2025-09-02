@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: k8s
   config:
     import: optional:file:.env[.properties]
   mvc:
