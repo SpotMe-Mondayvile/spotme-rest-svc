@@ -48,7 +48,8 @@ public class SecurityConfig {
             "/webjars/**",
             "/bus/v3/api-docs/**",
             "/api/v1/info",
-            "/h2-console/**"
+            "/h2-console/**",
+            "/actuator/**"
     };
 
 //    @Bean
