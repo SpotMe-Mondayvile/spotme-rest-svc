@@ -3,6 +3,7 @@ def registry = "containerregistry.spot-me-app.com/spotme/" as String
 def localRegistry = "http://192.168.1.227:8082/" as String
 def localRegistryUrl = "http://192.168.1.227:8082" as String
 def registryUrl = "https://containerregistry.spot-me-app.com" as String
+def registryBase = "containerregistry.spot-me-app.com" as String
 def appName = "spotme-auth-svc" as String
 s_branch = s_branch.replaceAll("/","_")
 
@@ -52,6 +53,20 @@ pipeline{
                 script{
                     dir("./"){
                         try{
+                            echo 'Tunnel URL did not work for image push, trying to push via intranet'
+                            docker.withRegistry(localRegistryUrl,'spotme-containerregistry') {
+
+                                def smweb_l = docker.build("spotme/${appName}:${s_branch}","./")
+
+                                // or docker.build, etc.
+                                def remoteImage = "${registryBase}/spotme/${appName}:${s_branch}"
+                                smweb_l.push()
+                                sh "echo LOCAL_IMAGE_NAME=${smweb_l.imageName()} >> pipeline.properties"
+                                sh "echo LOCAL_IMAGE_NAME=${smweb_l.imageName()} >> imageRef.properties"
+                                sh "echo IMAGE_NAME=${remoteImage} >> pipeline.properties"
+                                sh "echo IMAGE_NAME=${remoteImage} >> imageRef.properties"
+                            }
+                        }catch(e){
                             docker.withRegistry(registryUrl,'spotme-containerregistry') {
                                 // sh "docker system prune -a -f"
 
@@ -64,17 +79,6 @@ pipeline{
                                 smweb.push()
                                 // echo DOCKER_IMAGE_NAME='''+image_name+''' > pipeline.properties
                                 
-                            }
-                        }catch(e){
-                            echo 'Tunnel URL did not work for image push, trying to push via intranet'
-                            docker.withRegistry(localRegistryUrl,'spotme-containerregistry') {
-
-                                def smweb_l = docker.build("spotme/${appName}:${s_branch}","./")
-
-                                // or docker.build, etc.
-                                smweb_l.push()
-                                sh "echo LOCAL_IMAGE_NAME=${smweb_l.imageName()} >> pipeline.properties"
-                                sh "echo LOCAL_IMAGE_NAME=${smweb_l.imageName()} >> imageRef.properties"
                             }
                         }
                     }
@@ -168,6 +172,24 @@ pipeline{
 //            }
 //
 //        }
+
+/////-------- OLD REMOTE UPLOAD METHOD -------/////
+                        // dir("./"){
+// {
+//                             docker.withRegistry(registryUrl,'spotme-containerregistry') {
+//                                 // sh "docker system prune -a -f"
+
+//                                 def smweb = docker.build("spotme/${appName}:${s_branch}","./")
+//                                 //"docker push ${registry}${appName}:${s_branch}"
+
+//                                 // or docker.build, etc.
+//                                 sh "echo IMAGE_NAME=${smweb.imageName()} >> pipeline.properties"
+//                                 sh "echo IMAGE_NAME=${smweb.imageName()} >> imageRef.properties"
+//                                 smweb.push()
+//                                 // echo DOCKER_IMAGE_NAME='''+image_name+''' > pipeline.properties
+                                
+//                             }
+//                         }
 
 
 
