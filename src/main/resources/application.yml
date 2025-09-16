@@ -1,6 +1,6 @@
 spring:
-  profiles:
-    active: local
+  # profiles:
+  #   active: local
   config:
     import: optional:file:.env[.properties]
   mvc:
@@ -34,7 +34,7 @@ spring:
   #       format_sql: true
 
 jwt:
-  secret: ${JWT_SECRET_KEY}
+  secret: 973609c91cddbde6c43a04ea0fd1af4250926ae3eb3a9f7e8794b993af009563
 
 springdoc:
   api-docs:
@@ -44,14 +44,14 @@ springdoc:
 
 spotme:
   openapi:
-    dev-url: ${DEV_URL}
+    dev-url: http://localhost:8081
     local: http://localhost:8080
-    origin: ${REST_ORIGIN}
-    prod-url: ${PROD_URL}
-    uiorigin: ${UI_ORIGIN}
+    origin: http://localhost:8100
+    prod-url: https://rest.spot-me-app.com
+    uiorigin: http://localhost:8100
 
 server:
-  port: ${SERVER_PORT}
+  port: 8081
 
 
 # Local
