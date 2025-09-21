@@ -37,7 +37,7 @@ pipeline{
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('Sonarqube') {
-                    sh "./mvnw clean verify sonar:sonar -Dsonar.projectKey='spotme-auth-svc' -Dsonar.projectName='spotme-auth-svc'"
+                    sh "./mvnw clean verify sonar:sonar -Dsonar.projectKey='${appName}' -Dsonar.projectName='${appName}'"
             }
             }
         }
