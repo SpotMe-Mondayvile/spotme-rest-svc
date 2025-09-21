@@ -26,27 +26,27 @@ pipeline{
                 sh ''' mvn clean install -ntp -Dmaven.test.skip '''
             }
         }
-        // stage("Test"){
-        //     steps{
-        //        dir("./"){
-        //        sh ''' mvn --batch-mode test '''
-        //       }
-        //     }
-        // }
-        // stage('SonarQube Analysis') {
-        //     steps {
-        //         withSonarQubeEnv('My SonarQube Server') {
-        //             sh "mvn clean verify sonar:sonar -Dsonar.projectKey='spotme-auth-svc' -Dsonar.projectName='spotme-auth-svc'"
-        //     }
-        //     }
-        // }
-        //  stage("Quality Gate") {
-        //     steps {
-        //       timeout(time: 1, unit: 'HOURS') {
-        //         waitForQualityGate abortPipeline: true
-        //       }
-        //     }
-        //   }
+        stage("Test"){
+            steps{
+               dir("./"){
+               sh ''' ./mvnw --batch-mode test '''
+              }
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('My SonarQube Server') {
+                    sh "./mvnw clean verify sonar:sonar -Dsonar.projectKey='spotme-auth-svc' -Dsonar.projectName='spotme-auth-svc'"
+            }
+            }
+        }
+         stage("Quality Gate") {
+            steps {
+              timeout(time: 1, unit: 'HOURS') {
+                waitForQualityGate abortPipeline: true
+              }
+            }
+          }
         stage("Store Artifacts"){
             steps{
                archiveArtifacts artifacts: 'target/*.jar', followSymlinks: false
