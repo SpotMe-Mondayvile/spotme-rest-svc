@@ -24,7 +24,7 @@ pipeline{
         stage("Build"){
             steps{
                 sh ''' chmod +x mvnw '''
-                sh ''' mvn clean install -ntp -Dmaven.test.skip '''
+                sh ''' ./mvnw clean install -ntp -Dmaven.test.skip '''
             }
         }
         stage("Test"){
@@ -36,7 +36,7 @@ pipeline{
         }
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('My SonarQube Server') {
+                withSonarQubeEnv('Sonarqube') {
                     sh "./mvnw clean verify sonar:sonar -Dsonar.projectKey='spotme-auth-svc' -Dsonar.projectName='spotme-auth-svc'"
             }
             }
