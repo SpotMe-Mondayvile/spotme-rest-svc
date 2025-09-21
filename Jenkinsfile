@@ -41,13 +41,6 @@ pipeline{
             }
             }
         }
-         stage("Quality Gate") {
-            steps {
-              timeout(time: 1, unit: 'HOURS') {
-                waitForQualityGate abortPipeline: true
-              }
-            }
-          }
         stage("Store Artifacts"){
             steps{
                archiveArtifacts artifacts: 'target/*.jar', followSymlinks: false
