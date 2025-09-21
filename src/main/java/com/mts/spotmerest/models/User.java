@@ -72,6 +72,16 @@ public class User implements UserDetails {
     public User() {
     }
 
+    public User(String username, String firstname, String lastname, String email, String password, Role user) {
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.password = password;        
+        this.role = user;
+        //TODO Auto-generated constructor stub
+    }
+
     public Long getId() {
         return id;
     }
