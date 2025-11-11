@@ -12,7 +12,7 @@
 	<groupId>com.mts</groupId>
 	<artifactId>spotme-auth-svc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spotme-auth-svc</name>
+	<name>spotme-rest-svc</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
