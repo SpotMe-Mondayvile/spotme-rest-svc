@@ -4,7 +4,7 @@ def localRegistry = "http://192.168.1.227:8082/" as String
 def localRegistryUrl = "http://192.168.1.227:8082" as String
 def registryUrl = "https://containerregistry.spot-me-app.com" as String
 def registryBase = "containerregistry.spot-me-app.com" as String
-def appName = "spotme-auth-svc" as String
+def appName = "spotme-rest-svc" as String
 s_branch = s_branch.replaceAll("/","_")
 
 pipeline{

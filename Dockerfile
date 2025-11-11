@@ -9,7 +9,7 @@ COPY . .
 
 RUN  mvn package -ntp -Dmaven.test.skip
 
-ENTRYPOINT ["java","-jar","target/spotme-auth-svc-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","target/spotme-rest-svc-0.0.1-SNAPSHOT.jar"]
 
 
 
