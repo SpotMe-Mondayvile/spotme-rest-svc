@@ -27,7 +27,8 @@ springdoc:
     path: /swagger-ui-custom.html
 
 spotme:
-  openapi:
+  openapi: 
+    version: 2.0.2
     dev-url: ${DEV_URL}
     local: http://localhost:8080
     origin: ${REST_ORIGIN}

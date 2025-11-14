@@ -32,6 +32,8 @@ public class SecurityConfig {
 
     private String originUrl= System.getenv("REST_ORIGIN");
 
+    private String baseOriginUrl= System.getenv("ORIGIN");
+
     private String uiURL= System.getenv("UI_ORIGIN");
 
     private String gateWayURL= System.getenv("GATE_WAY_URL");
@@ -41,7 +43,7 @@ public class SecurityConfig {
     private static final String[] AUTH_WHITE_LIST = {
             "/swagger-ui/index.html",
             "/api/v1/auth/**",
-            "/v3/api-docs/**",
+            "/v3/**",
             "/api/v3/api-docs/**",
             "/swagger-ui/**",
             "/api-docs/**",
@@ -51,7 +53,16 @@ public class SecurityConfig {
             "/bus/v3/api-docs/**",
             "/api/v1/info",
             "/h2-console/**",
-            "/actuator/**"
+            "/actuator/**",
+            "/swagger**",
+            "/rest/**",
+            "/rest-docs/**",
+            "/swagger-ui-custom.html**",
+            "/swagger-ui/**",
+            "/openapi/**",
+            "/swagger-ui.html",
+            "/webjars/**",
+            "/v3/api-docs/**" 
     };
 
 //    @Bean
@@ -80,7 +91,8 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:8100","http://localhost:8083",gateWayURL,"http://localhost:8081","http://localhost:5173","http://localhost:3000",originUrl,nodeURL,nodeURL+":[*]","https://rest.spot-me-app.com/",uiURL,"https://ui.spot-me-app.com/"));
+        //corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:8100","mkp**",baseOriginUrl,"http://localhost:8083",gateWayURL,"http://localhost:8081","http://localhost:5173","http://localhost:3000","http://localhost:8080","http://localhost:8087",originUrl,nodeURL,nodeURL+":[*]","https://rest.spot-me-app.com/",uiURL,"https://ui.spot-me-app.com/"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
         corsConfiguration.setAllowedMethods(Arrays.asList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

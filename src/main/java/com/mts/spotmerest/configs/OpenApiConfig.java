@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
@@ -25,14 +25,14 @@ import java.util.List;
 
 @Configuration
 @OpenAPIDefinition(security = {@SecurityRequirement(name = "bearer-key")})
-public class OpenApiConfig {
+public class OpenAPIConfig {
 
-    @Bean
-    public OpenApiCustomiser customerGlobalHeaderOpenApiCustomiser() {
-        return openApi -> openApi.getComponents()
-                .addSecuritySchemes("bearer-key",
-                        new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT"));
-    }
+    // @Bean
+    // public OpenAPI customerGlobalHeaderOpenApiCustomiser() {
+    //     return openApi -> openApi.getComponents()
+    //             .addSecuritySchemes("bearer-key",
+    //                     new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT"));
+    // }
 
     private final String devUrl = (String)System.getenv("DEV_URL");
 
@@ -64,11 +64,16 @@ public class OpenApiConfig {
 
         Info info = new Info()
                 .title("SpotMe Authentication Service API")
-                .version("1.0")
+                .version("3.0")
                 .contact(contact)
                 .description("This API exposes endpoints to manage tutorials.").termsOfService("https://www.bezkoder.com/terms");
 
 
-        return new OpenAPI().info(info).servers(List.of(devServer,nodeServer,localServer));
+        return new OpenAPI().components(new Components()
+                    .addSecuritySchemes("bearer-key",
+                            new SecurityScheme()
+                                    .type(SecurityScheme.Type.HTTP)
+                                    .scheme("bearer")
+                                    .bearerFormat("JWT"))).info(info).servers(List.of(devServer,nodeServer,localServer));
     }
 }
