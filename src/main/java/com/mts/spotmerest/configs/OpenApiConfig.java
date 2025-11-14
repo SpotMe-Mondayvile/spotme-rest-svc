@@ -38,6 +38,10 @@ public class OpenAPIConfig {
 
     private final String nodeUrl = (String)System.getenv("NODE_URL");
 
+    private final String gatewayURL =(String) System.getenv("GATE_WAY_URL");
+
+    private final String gatewayPath = (String) System.getenv("GATE_WAY_PATH");
+
     private final String localUrl = "http:localhost:8081";
 
     @Value("https://rest.spot-me-app.com")
@@ -45,6 +49,12 @@ public class OpenAPIConfig {
 
     @Bean
     public OpenAPI myOpenAPI() {
+        
+        Server gatewayServer = new Server();
+        String gatewayServerUrl= gatewayURL + gatewayPath.toString();
+        gatewayServer.setUrl(gatewayServerUrl);
+        gatewayServer.setDescription("Gateway URL");
+
         Server devServer = new Server();
         devServer.setUrl(devUrl);
         devServer.setDescription("Server URL");
@@ -74,6 +84,6 @@ public class OpenAPIConfig {
                             new SecurityScheme()
                                     .type(SecurityScheme.Type.HTTP)
                                     .scheme("bearer")
-                                    .bearerFormat("JWT"))).info(info).servers(List.of(devServer,nodeServer,localServer));
+                                    .bearerFormat("JWT"))).info(info).servers(List.of(gatewayServer,devServer,nodeServer,localServer));
     }
 }
