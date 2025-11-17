@@ -7,18 +7,11 @@ import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.beans.factory.annotation.Value;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.info.License;
-import io.swagger.v3.oas.models.servers.Server;
 
 import java.util.List;
 
@@ -26,24 +19,23 @@ import java.util.List;
 @Configuration
 @OpenAPIDefinition(security = {@SecurityRequirement(name = "bearer-key")})
 public class OpenAPIConfig {
-    // @Bean
-    // public OpenAPI customerGlobalHeaderOpenApiCustomiser() {
-    //     return openApi -> openApi.getComponents()
-    //             .addSecuritySchemes("bearer-key",
-    //                     new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT"));
-    // }
 
-    private final String devUrl = (String)System.getenv("DEV_URL");
+    @Value("${spotme.env-props.dev-url}")
+    private String devUrl;
 
-    private final String nodeUrl = (String)System.getenv("NODE_URL");
+    @Value("${spotme.env-props.node-url}")
+    private String nodeUrl;
 
-    private final String gatewayURL =(String) System.getenv("GATE_WAY_URL");
+    @Value("${spotme.env-props.gateway-url}")
+    private String gatewayURL;
 
-    private final String gatewayPath = (String) System.getenv("GATE_WAY_PATH");
+    @Value("${spotme.env-props.gateway-path}")
+    private String gatewayPath;
 
-    private final String localUrl = "http:localhost:8081";
+    @Value("${spotme.env-props.dev-url}")
+    private String localUrl;
 
-    @Value("https://rest.spot-me-app.com")
+    @Value("${spotme.env-props.prod-url}")
     private String prodUrl;
 
     @Bean

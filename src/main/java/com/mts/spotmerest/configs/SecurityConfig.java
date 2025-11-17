@@ -1,11 +1,10 @@
 package com.mts.spotmerest.configs;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,21 +23,21 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-    private Environment env;
-//
-//    @Value("${origin}")
-//    private String devUrl;
 
+    @Value("${spotme.env-props.origin}")
+    private String originUrl;
 
-    private String originUrl= System.getenv("REST_ORIGIN");
+    @Value("${spotme.env-props.origin}")
+    private String baseOriginUrl;
 
-    private String baseOriginUrl= System.getenv("ORIGIN");
+    @Value("${spotme.env-props.origin}")
+    private String uiURL;
 
-    private String uiURL= System.getenv("UI_ORIGIN");
+    @Value("${spotme.env-props.gateway-url}")
+    private String gateWayURL;
 
-    private String gateWayURL= System.getenv("GATE_WAY_URL");
-
-    private String nodeURL= System.getenv("NODE_URL");
+    @Value("${spotme.env-props.node-url}")
+    private String nodeURL;
 
     private static final String[] AUTH_WHITE_LIST = {
             "/swagger-ui/index.html",
