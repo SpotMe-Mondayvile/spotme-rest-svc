@@ -43,7 +43,7 @@ pipeline{
             steps {
                 withSonarQubeEnv('Sonarqube') {
                     sh "./mvnw clean verify sonar:sonar -Dsonar.projectKey='${appName}' -Dsonar.projectName='${appName}' -Dsonar.branch.name=${env.BRANCH_NAME}"
-            }
+             }
             }
         }
 
