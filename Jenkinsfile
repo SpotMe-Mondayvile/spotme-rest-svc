@@ -39,9 +39,11 @@ pipeline{
         }
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('Sonarqube') {
+                withCredentials([string(credentialsId: 'spotme-rest-jwt-jenkins', variable: 'JWT_SECRET_KEY')]) {
+                    withSonarQubeEnv('Sonarqube') {
                     sh "./mvnw clean verify sonar:sonar -Dsonar.projectKey='${appName}' -Dsonar.projectName='${appName}' -Dsonar.branch.name=${env.BRANCH_NAME}"
-             }
+                }
+                }   
             }
         }
 
