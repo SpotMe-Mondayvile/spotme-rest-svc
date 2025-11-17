@@ -33,9 +33,7 @@ pipeline{
         stage("Test"){
             steps{
                 withCredentials([string(credentialsId: 'spotme-rest-jwt-jenkins', variable: 'JWT_SECRET_KEY')]) {
-                    dir("./"){
                         sh ''' ./mvnw --batch-mode test '''
-                    }
                 }
             }
         }
