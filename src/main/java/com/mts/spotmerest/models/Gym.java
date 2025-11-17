@@ -52,8 +52,8 @@ public class Gym {
         this.gymId = gymId;
     }
 
-    public void setId(String id) {
-        this.gymId = id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

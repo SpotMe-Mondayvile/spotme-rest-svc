@@ -1,4 +1,4 @@
-FROM maven:3.9.8-amazoncorretto-17
+FROM maven:3.9.11-amazoncorretto-21
 
 EXPOSE 8080
 EXPOSE 3000
@@ -9,7 +9,7 @@ COPY . .
 
 RUN  mvn package -ntp -Dmaven.test.skip
 
-ENTRYPOINT ["java","-jar","target/spotme-rest-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","target/spotme-rest-svc-0.0.1-SNAPSHOT.jar"]
 
 
 

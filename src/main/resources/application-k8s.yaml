@@ -1,0 +1,44 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  mvc:
+    dispatch-options-request: true  
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: ${DB_DRIVER}
+  jpa:
+    hibernate:
+      ddl-auto: ${DB_BEHAVIOR}
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: ${DB_DIALECT}
+        format_sql: true
+
+jwt:
+  secret: ${JWT_SECRET_KEY}
+
+springdoc:
+  api-docs:
+    enabled: true 
+    path: /api-docs
+    version: OPENAPI_3_1
+  swagger-ui:
+    enabled: true 
+    path: /swagger-ui-custom.html
+
+spotme:
+  openapi: 
+    version: 2.0.2
+    dev-url: ${DEV_URL}
+    local: http://localhost:8080
+    origin: ${REST_ORIGIN}
+    prod-url: ${PROD_URL}
+    uiorigin: ${UI_ORIGIN}
+
+server:
+  port: ${SERVER_PORT}
+
+# Local

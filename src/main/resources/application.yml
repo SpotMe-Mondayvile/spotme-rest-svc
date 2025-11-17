@@ -1,0 +1,58 @@
+spring:
+  # profiles:
+  #   active: local
+  config:
+    import: optional:file:.env[.properties]
+  mvc:
+    dispatch-options-request: true
+  datasource:
+    url: jdbc:h2:mem:local # For an in-memory database named 'testdb'
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  h2:
+    console:
+      enabled: true # Enables the H2 web console
+      path: /h2-console # Specifies the path to access the console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect # Specifies the Hibernate dialect for H2
+    hibernate:
+      ddl-auto: update # Controls schema generation (e.g., 'update', 'create-drop')
+    show-sql: true # Logs SQL statements executed by JPA
+  # datasource:
+  #   url: ${DB_URL}
+  #   username: ${DB_USERNAME}
+  #   password: ${DB_PASSWORD}
+  #   driver-class-name: ${DB_DRIVER}
+  # jpa:
+  #   hibernate:
+  #     ddl-auto: ${DB_BEHAVIOR}
+  #   show-sql: true
+  #   properties:
+  #     hibernate:
+  #       dialect: ${DB_DIALECT}
+  #       format_sql: true
+
+jwt:
+  secret: 973609c91cddbde6c43a04ea0fd1af4250926ae3eb3a9f7e8794b993af009563
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    swagger: "2.0"
+    path: /swagger-ui-custom.html
+
+spotme:
+  openapi:
+    dev-url: http://localhost:8081
+    local: http://localhost:8080
+    origin: http://localhost:8100
+    prod-url: https://rest.spot-me-app.com
+    uiorigin: http://localhost:8100
+
+server:
+  port: 8081
+
+
+# Local

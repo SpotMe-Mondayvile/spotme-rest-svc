@@ -3,6 +3,7 @@ def registry = "containerregistry.spot-me-app.com/spotme/" as String
 def localRegistry = "http://192.168.1.227:8082/" as String
 def localRegistryUrl = "http://192.168.1.227:8082" as String
 def registryUrl = "https://containerregistry.spot-me-app.com" as String
+def registryBase = "containerregistry.spot-me-app.com" as String
 def appName = "spotme-rest-svc" as String
 s_branch = s_branch.replaceAll("/","_")
 
@@ -22,19 +23,34 @@ pipeline{
 
         stage("Build"){
             steps{
-                sh ''' mvn clean install -ntp -Dmaven.test.skip '''
+                sh ''' chmod +x mvnw '''
+                sh ''' ./mvnw clean install -ntp -Dmaven.test.skip '''
             }
         }
         stage("Test"){
             steps{
                dir("./"){
-               sh ''' echo "Fake Test" '''
+               sh ''' ./mvnw --batch-mode test '''
               }
             }
         }
-        stage("Archive Build"){
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('Sonarqube') {
+                    sh "./mvnw clean verify sonar:sonar -Dsonar.projectKey='${appName}' -Dsonar.projectName='${appName}' -Dsonar.branch.name=${env.BRANCH_NAME}"
+            }
+            }
+        }
+        //  stage("Quality Gate") {
+        //     steps {
+        //       timeout(time: 1, unit: 'HOURS') {
+        //         waitForQualityGate abortPipeline: true
+        //       }
+        //     }
+        //   }
+        stage("Store Artifacts"){
             steps{
-               archiveArtifacts artifacts: "${appName}-archive.tar.gz*", followSymlinks: false
+               archiveArtifacts artifacts: 'target/*.jar', followSymlinks: false
             }
         }
     //    stage("Build Container Images"){
@@ -52,8 +68,22 @@ pipeline{
                 script{
                     dir("./"){
                         try{
+                            echo 'Tunnel URL did not work for image push, trying to push via intranet'
+                            docker.withRegistry(localRegistryUrl,'spotme-containerregistry') {
+
+                                def smweb_l = docker.build("spotme/${appName}:${s_branch}","./")
+
+                                // or docker.build, etc.
+                                def remoteImage = "${registryBase}/spotme/${appName}:${s_branch}"
+                                smweb_l.push()
+                                sh "echo LOCAL_IMAGE_NAME=${smweb_l.imageName()} >> pipeline.properties"
+                                sh "echo LOCAL_IMAGE_NAME=${smweb_l.imageName()} >> imageRef.properties"
+                                sh "echo IMAGE_NAME=${remoteImage} >> pipeline.properties"
+                                sh "echo IMAGE_NAME=${remoteImage} >> imageRef.properties"
+                            }
+                        }catch(e){
                             docker.withRegistry(registryUrl,'spotme-containerregistry') {
-                                sh "docker system prune -a -f"
+                                // sh "docker system prune -a -f"
 
                                 def smweb = docker.build("spotme/${appName}:${s_branch}","./")
                                 //"docker push ${registry}${appName}:${s_branch}"
@@ -65,41 +95,15 @@ pipeline{
                                 // echo DOCKER_IMAGE_NAME='''+image_name+''' > pipeline.properties
                                 
                             }
-                        }catch(e){
-                            echo 'Tunnel URL did not work for image push, trying to push via intranet'
-                            docker.withRegistry(localRegistryUrl,'spotme-containerregistry') {
-
-                                def smweb_l = docker.build("spotme/${appName}:${s_branch}","./")
-
-                                // or docker.build, etc.
-                                smweb_l.push()
-                                sh "echo LOCAL_IMAGE_NAME=${smweb_l.imageName()} >> pipeline.properties"
-                                sh "echo LOCAL_IMAGE_NAME=${smweb_l.imageName()} >> imageRef.properties"
-                            }
                         }
                     }
 
                 }
             }
         }
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    dir("spotme-rest/"){
-                        def mvn = tool 'maven';
-                        try{
-                        withSonarQubeEnv() {
-                            sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=spotme -Dsonar.projectName='spotme'"
-                        }}catch (e){
-                            println "Sonar Analysis could not operate"
-                        }
-                    }
-            }
-            }
-        }
+    
         stage("Store Pipeline Artifacts"){
             steps{
-               archiveArtifacts artifacts: "${appName}-archive.tar.gz*", followSymlinks: false
                archiveArtifacts artifacts: 'imageRef.properties', followSymlinks: false
                archiveArtifacts artifacts: 'pipeline.properties', followSymlinks: false
             }
@@ -169,6 +173,24 @@ pipeline{
 //            }
 //
 //        }
+
+/////-------- OLD REMOTE UPLOAD METHOD -------/////
+                        // dir("./"){
+// {
+//                             docker.withRegistry(registryUrl,'spotme-containerregistry') {
+//                                 // sh "docker system prune -a -f"
+
+//                                 def smweb = docker.build("spotme/${appName}:${s_branch}","./")
+//                                 //"docker push ${registry}${appName}:${s_branch}"
+
+//                                 // or docker.build, etc.
+//                                 sh "echo IMAGE_NAME=${smweb.imageName()} >> pipeline.properties"
+//                                 sh "echo IMAGE_NAME=${smweb.imageName()} >> imageRef.properties"
+//                                 smweb.push()
+//                                 // echo DOCKER_IMAGE_NAME='''+image_name+''' > pipeline.properties
+                                
+//                             }
+//                         }
 
 
 
