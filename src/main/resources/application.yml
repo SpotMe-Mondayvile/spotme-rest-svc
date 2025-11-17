@@ -64,5 +64,5 @@ spotme:
     node-url: ${NODE_URL:http://mkp-d1-c01.magus.lab}
 
 server:
-  port: ${SERVER_PORT}
+  port: ${SERVER_PORT:8087}
 # Local
