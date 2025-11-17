@@ -26,7 +26,6 @@ import java.util.List;
 @Configuration
 @OpenAPIDefinition(security = {@SecurityRequirement(name = "bearer-key")})
 public class OpenAPIConfig {
-
     // @Bean
     // public OpenAPI customerGlobalHeaderOpenApiCustomiser() {
     //     return openApi -> openApi.getComponents()
