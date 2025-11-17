@@ -52,6 +52,8 @@ public class SecurityConfig {
             "/bus/v3/api-docs/**",
             "/api/v1/info",
             "/h2-console/**",
+            "/actuator/info",
+            "/actuator/health",
             "/actuator/**",
             "/swagger**",
             "/rest/**",
