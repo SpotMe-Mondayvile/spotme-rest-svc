@@ -24,7 +24,6 @@ pipeline{
         stage("Build"){
             steps{
                 withCredentials([string(credentialsId: 'spotme-rest-jwt-jenkins', variable: 'JWT_SECRET_KEY')]) {
-                    sh 'echo "Using API Key: $API_KEY"'
                     sh ''' chmod +x mvnw '''
                     sh ''' ./mvnw clean install -ntp -Dmaven.test.skip '''
                 }                
