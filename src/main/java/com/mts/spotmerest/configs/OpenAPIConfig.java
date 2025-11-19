@@ -42,7 +42,7 @@ public class OpenAPIConfig {
     public OpenAPI myOpenAPI() {
         
         Server gatewayServer = new Server();
-        String gatewayServerUrl= gatewayURL + gatewayPath.toString();
+        String gatewayServerUrl= "http://" + gatewayURL + gatewayPath.toString();
         gatewayServer.setUrl(gatewayServerUrl);
         gatewayServer.setDescription("Gateway URL");
 
